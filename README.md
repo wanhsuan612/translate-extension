@@ -161,10 +161,6 @@ To modify the extension:
 3. Click the refresh icon on the extension card
 4. Test your changes
 
-## License
-
-[Specify your license here]
-
 ## Credits
 
 Built with:
