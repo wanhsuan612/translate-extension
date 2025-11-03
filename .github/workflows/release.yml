@@ -30,7 +30,7 @@ jobs:
       - name: Build Chrome extension zip
         run: |
           mkdir -p build
-          zip -r build/extension.zip src manifest.json icons/* -x "*.DS_Store"
+          zip -r build/extension.zip . -x "*.git*" "*.github*" "node_modules/*" "build/*" "*.DS_Store"
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
