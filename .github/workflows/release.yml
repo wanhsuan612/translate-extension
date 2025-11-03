@@ -2,8 +2,6 @@ name: Build & Release Chrome Extension
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
 
