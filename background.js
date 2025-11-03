@@ -2,7 +2,7 @@ importScripts("config.js");
 
 // Store the latest translation result
 let latestTranslation = {
-  text: "尚未進行翻譯",
+  text: "尚未進行翻譯 / まだ翻訳されていません",
   isError: false
 };
 
@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(() => {
   // Create parent menu
   chrome.contextMenus.create({
     id: "translateParent",
-    title: "翻譯選取文字 (Gemini)",
+    title: "翻譯選取文字 / 選択したテキストを翻訳 (Gemini)",
     contexts: ["selection"]
   });
 
@@ -42,8 +42,9 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
     chrome.action.openPopup();
 
     // Set initial state
+    const isJapanese = info.menuItemId === "translateToJapanese";
     latestTranslation = {
-      text: "正在翻譯中...",
+      text: isJapanese ? "翻訳中..." : "正在翻譯中...",
       isError: false
     };
 
@@ -51,9 +52,10 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
     const result = await translateWithGemini(text, targetLang);
 
     // Store the result
+    const errorKeywords = ["翻譯失敗", "無法取得翻譯結果", "翻訳失敗", "翻訳結果を取得できません"];
     latestTranslation = {
       text: result,
-      isError: result.includes("翻譯失敗") || result.includes("無法取得翻譯結果")
+      isError: errorKeywords.some(keyword => result.includes(keyword))
     };
 
     // Send result to any open popup windows
@@ -76,6 +78,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 });
 
 async function translateWithGemini(text, targetLang) {
+  const isJapanese = targetLang === "Japanese";
   const prompt = `Translate the following text into ${targetLang}.
 If the input already contains both languages, only translate the part that is not in ${targetLang}.
 IMPORTANT: Do NOT translate proper nouns (names of people, organizations, brands, locations, book/movie titles, product names) or technical terms. Keep them exactly as they appear in the source text.
@@ -97,9 +100,10 @@ Text: """${text}"""`;
     );
 
     const data = await response.json();
-    return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "(無法取得翻譯結果)";
+    return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+           (isJapanese ? "(翻訳結果を取得できません)" : "(無法取得翻譯結果)");
   } catch (err) {
     console.error("Gemini translation error:", err);
-    return "(翻譯失敗)";
+    return isJapanese ? "(翻訳失敗)" : "(翻譯失敗)";
   }
 }
