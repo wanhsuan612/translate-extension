@@ -3,7 +3,7 @@
   "name": "Auto Translate Selection (zh-TW↔JP)",
   "version": "1.1",
   "description": "Right-click to translate selected text between Traditional Chinese and Japanese using Gemini.",
-  "permissions": ["activeTab", "scripting", "contextMenus"],
+  "permissions": ["activeTab", "scripting", "contextMenus", "storage"],
   "background": {
     "service_worker": "background.js"
   },
