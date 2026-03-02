@@ -2,6 +2,24 @@
 
 A Chrome extension that enables quick translation between Traditional Chinese and Japanese using Google's Gemini AI model.
 
+## Examples
+1. 【中 → 日】
+
+   Google Translate:
+   <img src="./images/google_zh_to_jp.png" alt="Google Translate" width="200">
+   
+   AI Translate Extension:
+   <img src="./images/gemini_zh_to_jp.png" alt="Gemini Translate" width="200">
+
+2. 【日 → 中】
+
+   Google Translate:
+   <img src="./images/google_jp_to_zh.png" alt="Google Translate" width="200">
+   
+   AI Translate Extension:
+   <img src="./images/gemini_jp_to_zh.png" alt="Gemini Translate" width="200">
+
+
 ## Features
 
 - **Context Menu Translation**: Right-click on any selected text to translate it
